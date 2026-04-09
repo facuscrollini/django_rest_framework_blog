@@ -1,7 +1,10 @@
+import uuid
+
 from django.db import models
 from django.utils import timezone
 from django.utils.text import slugify
-import uuid
+
+from django_ckeditor_5.fields import CKEditor5Field
 
 # Create your models here.
 
@@ -20,8 +23,8 @@ class Category(models.Model):
 
     name = models.CharField(max_length=255, unique=True)
     title = models.CharField(max_length=255, unique=True, blank=True, null=True)
-    description = models.TextField()
-    thumbnail = models.ImageField(upload_to=category_thumbnail_directory)
+    description = models.TextField(blank=True, null=True)
+    thumbnail = models.ImageField(upload_to=category_thumbnail_directory, blank=True, null=True)
     slug = models.CharField(max_length=128)
 
     def __str__(self):
@@ -43,7 +46,7 @@ class Post(models.Model):
 
     title = models.CharField()
     description = models.CharField(max_length=128)
-    content = models.TextField()
+    content = CKEditor5Field('Content', config_name='default')
     thumbnail = models.ImageField(upload_to=blog_thumbnail_directory)
 
     keywords = models.CharField(max_length=200)
@@ -56,7 +59,7 @@ class Post(models.Model):
     status = models.CharField(max_length=10, choices=status_options, default="draft")
 
     category = models.ForeignKey(Category, on_delete=models.PROTECT)
-    autor = models.CharField()
+
 
     objects = models.Manager() 
     postobjects = PostObjects()
