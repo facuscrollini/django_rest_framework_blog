@@ -60,7 +60,16 @@ INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS + THIRD_PARTY_APPS
 
 CKEDITOR_5_CONFIGS = {
     'default': {
-        'toolbar': 'full',
+            'toolbar': [
+            'heading', '|',
+            'bold', 'italic', 'underline', 'strikethrough',
+            'subscript', 'superscript', 'highlight', '|',
+            'link', 'bulletedList', 'numberedList', 'todoList', '|',
+            'outdent', 'indent', '|',
+            'insertTable', 'blockQuote', 'codeBlock',
+            'imageUpload', 'mediaEmbed', '|',
+            'undo', 'redo', 'sourceEditing'
+        ],
         'autoParagraph': False
     }
 }

@@ -22,6 +22,14 @@ class PostAdminForm(forms.ModelForm):
         fields = '__all__'
 
 
+class HeadingInline(admin.TabularInline):
+    model = Heading
+    extra = 1
+    fields = ('title', 'level','order', 'slug')
+    prepopulated_fields = {'slug': ('title',)}
+    ordering = ('order',)
+
+
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
     form = PostAdminForm
@@ -40,12 +48,13 @@ class PostAdmin(admin.ModelAdmin):
             'fields': ('status', 'created_at', 'updated_at')
         })
     )
+    inlines = [HeadingInline]
 
 
-@admin.register(Heading)
-class HeadingAdmin(admin.ModelAdmin):
-    list_display = ('title', 'post', 'level', 'order')
-    search_fields = ('title', 'post__title')
-    list_filter = ('level', 'post')
-    ordering = ('post', 'order')
-    prepopulated_fields = {'slug':('title',)}
+# @admin.register(Heading)
+# class HeadingAdmin(admin.ModelAdmin):
+#     list_display = ('title', 'post', 'level', 'order')
+#     search_fields = ('title', 'post__title')
+#     list_filter = ('level', 'post')
+#     ordering = ('post', 'order')
+#     prepopulated_fields = {'slug':('title',)}
