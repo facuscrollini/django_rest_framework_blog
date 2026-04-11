@@ -51,10 +51,10 @@ class PostAdmin(admin.ModelAdmin):
     inlines = [HeadingInline]
 
 
-# @admin.register(Heading)
-# class HeadingAdmin(admin.ModelAdmin):
-#     list_display = ('title', 'post', 'level', 'order')
-#     search_fields = ('title', 'post__title')
-#     list_filter = ('level', 'post')
-#     ordering = ('post', 'order')
-#     prepopulated_fields = {'slug':('title',)}
+@admin.register(Heading)
+class HeadingAdmin(admin.ModelAdmin):
+    list_display = ('title', 'post', 'level', 'order')
+    search_fields = ('title', 'post__title')
+    list_filter = ('level', 'post')
+    ordering = ('post', 'order')
+    prepopulated_fields = {'slug':('title',)}
