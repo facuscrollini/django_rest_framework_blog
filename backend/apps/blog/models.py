@@ -57,6 +57,8 @@ class Post(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     status = models.CharField(max_length=10, choices=status_options, default="draft")
+    
+    views = models.IntegerField(default=0)
 
     category = models.ForeignKey(Category, on_delete=models.PROTECT)
 
