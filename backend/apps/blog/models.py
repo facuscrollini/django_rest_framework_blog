@@ -58,7 +58,7 @@ class Post(models.Model):
 
     status = models.CharField(max_length=10, choices=status_options, default="draft")
     
-    views = models.IntegerField(default=0)
+   
 
     category = models.ForeignKey(Category, on_delete=models.PROTECT)
 
@@ -71,6 +71,15 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
+    
+
+class PostView(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    post = models.ForeignKey(Post, on_delete=models.PROTECT, related_name="post_view")
+    ip_address = models.GenericIPAddressField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    
     
 
 
