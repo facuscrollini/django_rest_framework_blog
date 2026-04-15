@@ -50,7 +50,7 @@ class Post(models.Model):
     thumbnail = models.ImageField(upload_to=blog_thumbnail_directory)
 
     keywords = models.CharField(max_length=200)
-    # slug = models.CharField(max_length=128)
+    slug = models.CharField(max_length=128)
 
 
     created_at = models.DateTimeField(default=timezone.now)
