@@ -77,7 +77,7 @@ class PostView(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     post = models.ForeignKey(Post, on_delete=models.PROTECT, related_name="post_view")
     ip_address = models.GenericIPAddressField()
-    timestamp = models.DateTimeField(auto_now_add=True)
+    # timestamp = models.DateTimeField(auto_now_add=True)
 
     
     
