@@ -19,9 +19,10 @@ class PostDetailView(APIView):
         post = Post.postobjects.get(slug=slug)
         serialized_post = PostSerializer(post).data
 
-        client_ip = self.get_client_ip(request)
+        client_ip = get_client_ip(request)
+        print(client_ip)
 
-        if PostView.objects.filter(post=post, ip=client_ip).exists():
+        if PostView.objects.filter(post=post, ip_address=client_ip).exists():
             return Response(serialized_post)
         
         PostView.objects.create(post=post, ip_address = client_ip)

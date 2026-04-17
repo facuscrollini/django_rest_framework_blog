@@ -33,16 +33,19 @@ class HeadingSerializer(serializers.ModelSerializer):
 class PostSerializer(serializers.ModelSerializer):
     category = CategorySerializer()
     headings = HeadingSerializer(many=True)
-    views = PostViewSerializer(many=True)
+    view_count = serializers.SerializerMethodField()
+
     class Meta: 
         model = Post
         fields = "__all__"
 
+    def get_view_count(self, obj):
+        return obj.post_view.count()
 
 
 class PostListSerializer(serializers.ModelSerializer):
     category = CategoryListSerializer()
-    views = PostViewSerializer(many=True)
+
     class Meta: 
         model = Post
         fields= [
@@ -51,8 +54,7 @@ class PostListSerializer(serializers.ModelSerializer):
             "description",
             "thumbnail",
             "slug",
-            "category",
-            'views'
+            "category"
         ]
 
 
