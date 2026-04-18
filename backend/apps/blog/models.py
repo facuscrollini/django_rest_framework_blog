@@ -1,6 +1,9 @@
 import uuid
 
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+
 from django.utils import timezone
 from django.utils.text import slugify
 from .utils import get_client_ip
@@ -74,7 +77,7 @@ class Post(models.Model):
 
 class PostView(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    post = models.ForeignKey(Post, on_delete=models.PROTECT, related_name="post_view")
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="post_view")
     ip_address = models.GenericIPAddressField()
     # timestamp = models.DateTimeField(auto_now_add=True)
 
@@ -116,7 +119,7 @@ class Heading(models.Model):
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
-    post = models.ForeignKey(Post, on_delete=models.PROTECT, related_name='headings')
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='headings')
 
     title = models.CharField(max_length=255)
     slug = models.CharField(max_length=255)
@@ -141,3 +144,7 @@ class Heading(models.Model):
             self.slug = slugify(self.title)
         super().save(*args, **kwargs)
 
+@receiver(post_save, sender=Post)
+def create_post_analytics(sender, instance,created, **kwargs):
+    if created:
+        PostAnalytics.objects.create(post=instance)
