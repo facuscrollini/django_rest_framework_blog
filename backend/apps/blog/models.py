@@ -3,6 +3,7 @@ import uuid
 from django.db import models
 from django.utils import timezone
 from django.utils.text import slugify
+from .utils import get_client_ip
 
 from django_ckeditor_5.fields import CKEditor5Field
 
@@ -77,6 +78,36 @@ class PostView(models.Model):
     ip_address = models.GenericIPAddressField()
     # timestamp = models.DateTimeField(auto_now_add=True)
 
+
+class PostAnalytics(models.Model):
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    post = models.ForeignKey(Post, on_delete=models.PROTECT, related_name="post_analytics")
+
+    views = models.PositiveIntegerField(default=0)
+    impressions = models.PositiveIntegerField(default=0)
+    clicks = models.PositiveIntegerField(default=0)
+    click_through_rate = models.FloatField(default=0)
+    avg_time_on_page = models.FloatField(default=0)
+
+    def increment_click(self):
+        self.clicks += 1
+        self._update_click_through_rate()
+
+    def _update_click_through_rate(self):
+        if self.impressions > 0:
+            self.click_through_rate = (self.clicks / self.impressions) * 100
+
+    def increment_impression(self):
+        self.impressions += 1
+        self._update_click_through_rate()
+
+    def increment_view(self, request):
+        ip_address = get_client_ip(request)
+        if not PostView.objects.filter(post = self.post,ip_address = ip_address).exists():
+            PostView.objects.create(post=self.post, ip_address = ip_address)
+            self.views += 1
+            self.save()
     
     
 
