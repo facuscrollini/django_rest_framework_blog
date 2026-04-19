@@ -1,6 +1,10 @@
 from django.urls import path,include
 
-from .views import PostListView, PostDetailView, PostHeadingsView
+from .views import (
+    PostListView,
+    PostDetailView,
+    PostHeadingsView,
+    IncrementPostClickView)
 
 
 
@@ -8,5 +12,6 @@ urlpatterns = [
     path('posts/', PostListView.as_view(), name='post-list'),
     path('ckeditor5/', include('django_ckeditor_5.urls')),
     path('posts/<str:slug>/', PostDetailView.as_view(), name='post-detail'),
-    path('posts/<str:slug>/headings', PostHeadingsView.as_view(), name="post-headings")
+    path('post/<str:slug>/headings', PostHeadingsView.as_view(), name="post-headings"),
+    path('post/increment_click', IncrementPostClickView.as_view(), name="increment-post-click")
 ]
