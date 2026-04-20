@@ -65,9 +65,6 @@ class PostHeadingsView(ListAPIView):
 
 class IncrementPostClickView(APIView):
 
-    
-    
-
     def post(self, request):
         """
         Incrementa el contador de clics de un post basado en su slug
