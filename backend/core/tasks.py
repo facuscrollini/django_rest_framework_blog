@@ -15,3 +15,6 @@ django.setup()
 @shared_task
 def test_task():
     logger.info("Test celery")
+@shared_task
+def test_task_2():
+    logger.info("Test celery 2")
