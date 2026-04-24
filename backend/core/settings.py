@@ -53,7 +53,8 @@ THIRD_PARTY_APPS = [
     'rest_framework',
     'channels',
     'django_ckeditor_5',
-    'django_celery_results'
+    'django_celery_results',
+    'django_celery_beat'
 ]
 
 INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS + THIRD_PARTY_APPS
@@ -185,6 +186,7 @@ CHANNEL_LAYERS = {
     }
 }
 
+REDIS_HOST = env("REDIS_HOST")
 
 CACHES = {
     'default': {
@@ -217,5 +219,7 @@ CELERY_CACHE_BACKEND = 'default'
 CELERY_IMPORTS = (
     'core.tasks',
     'apps.blog.tasks'
-
 )
+
+CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
+CELERY_BEAT_SCHEDULE = {}
