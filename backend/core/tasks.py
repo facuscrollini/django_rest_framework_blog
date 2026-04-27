@@ -14,5 +14,5 @@ django.setup()
 
 @shared_task
 def test_task():
-    logger.info("Test celery 2")
+    logger.info("Test celery 3")
 
